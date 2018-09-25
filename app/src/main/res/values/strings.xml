@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Swarish</string>
+    <string name="title_home">Home</string>
+    <string name="title_all_stores">All Stores</string>
+    <string name="title_all_categories">All Categories</string>
+    <string name="title_my_account">My Account</string>
+    <string name="title_more">More</string>
+</resources>
