@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "841706513017",
+    "firebase_url": "https://swarish-e8312.firebaseio.com",
+    "project_id": "swarish-e8312",
+    "storage_bucket": "swarish-e8312.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:841706513017:android:9f250e5c11fdd6d2",
+        "android_client_info": {
+          "package_name": "com.swarish.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "841706513017-3v2agu2i2ri4iv7oqr475ln1aitoum5g.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAkCkpBUeraXHSHdxN5v3c6JSDzC-cxxDE"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

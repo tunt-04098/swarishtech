@@ -5,15 +5,15 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 
 /**
  * Created by TuNT on 9/25/2018.
  * tunt.program.04098@gmail.com
  */
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends FragmentActivity {
 
     private static final String URL_HOME = "https://swarish.in/";
     private static final String URL_ALL_STORES = "https://swarish.in/store/all";
@@ -73,7 +73,9 @@ public class MainActivity extends AppCompatActivity {
     public void onBackPressed() {
         Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.content);
         if (((BackView) fragment).onBackPressed()) {
-            super.onBackPressed();
+            if (getSupportFragmentManager().getBackStackEntryCount() <= 1) {
+                finish();
+            }
         }
     }
 }

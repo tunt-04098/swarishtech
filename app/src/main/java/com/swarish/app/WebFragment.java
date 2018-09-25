@@ -1,9 +1,12 @@
 package com.swarish.app;
 
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,6 +38,8 @@ public class WebFragment extends Fragment implements BackView {
 
     private String title;
 
+    private Toolbar toolbar;
+
     private TextView tvTitle;
 
     private WebView webView;
@@ -53,10 +58,20 @@ public class WebFragment extends Fragment implements BackView {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_web, container, false);
 
+        toolbar = view.findViewById(R.id.toolbar);
         webView = view.findViewById(R.id.webView);
         tvTitle = view.findViewById(R.id.tvTitle);
 
         tvTitle.setText(title);
+
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (webView.canGoBack()) {
+                    webView.goBack();
+                }
+            }
+        });
 
         // Force links and redirects to open in the WebView instead of in a browser
         webView.setWebViewClient(new WebViewClient());
@@ -67,7 +82,26 @@ public class WebFragment extends Fragment implements BackView {
 
         // REMOTE RESOURCE
         webView.loadUrl(url);
-        webView.setWebViewClient(new MyWebViewClient());
+        webView.setWebViewClient(new MyWebViewClient() {
+
+            @Override
+            public void onPageStarted(WebView view, String url, Bitmap favicon) {
+                if (view.canGoBack()) {
+                    toolbar.setNavigationIcon(R.drawable.ic_back);
+                } else {
+                    toolbar.setNavigationIcon(null);
+                }
+            }
+
+            @Override
+            public void onPageFinished(WebView view, String url) {
+                if (view.canGoBack()) {
+                    toolbar.setNavigationIcon(R.drawable.ic_back);
+                } else {
+                    toolbar.setNavigationIcon(null);
+                }
+            }
+        });
 
         return view;
     }
