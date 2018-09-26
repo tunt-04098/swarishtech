@@ -1,5 +1,7 @@
 package com.swarish.app;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -7,7 +9,10 @@ import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.MenuItem;
+
+import com.google.firebase.messaging.FirebaseMessaging;
 
 /**
  * Created by TuNT on 9/25/2018.
@@ -19,6 +24,10 @@ public class MainActivity extends FragmentActivity {
     private static final String URL_ALL_STORES = "https://swarish.in/store/all";
     private static final String URL_ALL_CATEGORIES = "https://swarish.in/category/all";
     private static final String URL_MY_ACCOUNT = "https://swarish.in/login.html";
+
+    private static final String KEY_ENABLE_NOTIFICATION = "KEY_ENABLE_NOTIFICATION";
+
+    private SharedPreferences sharedpreferences;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener =
             new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -52,6 +61,9 @@ public class MainActivity extends FragmentActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        sharedpreferences = getSharedPreferences(getString(R.string.app_name), Context.MODE_PRIVATE);
+        checkSubscribeFCM();
+
         navigation = findViewById(R.id.navigation);
 
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
@@ -77,5 +89,31 @@ public class MainActivity extends FragmentActivity {
                 finish();
             }
         }
+    }
+
+    public void checkSubscribeFCM() {
+        if (enableNotification()) {
+            subscribeFCM();
+        } else {
+            unsubscribeFCM();
+        }
+    }
+
+    public void subscribeFCM() {
+        FirebaseMessaging.getInstance().subscribeToTopic("news");
+    }
+
+    public void unsubscribeFCM() {
+        FirebaseMessaging.getInstance().unsubscribeFromTopic("news");
+    }
+
+    public boolean enableNotification() {
+        return sharedpreferences.getBoolean(KEY_ENABLE_NOTIFICATION, true);
+    }
+
+    public void saveEnableNotification(boolean enable) {
+        SharedPreferences.Editor editor = sharedpreferences.edit();
+        editor.putBoolean(KEY_ENABLE_NOTIFICATION, enable);
+        editor.commit();
     }
 }

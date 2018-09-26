@@ -7,10 +7,12 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.SwitchCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CompoundButton;
 
 /**
  * Created by TuNT on 9/25/2018.
@@ -23,6 +25,8 @@ public class MoreFragment extends Fragment implements BackView {
         return fragment;
     }
 
+    SwitchCompat scNotification;
+
     Button btnShare;
 
     Button btnRateApp;
@@ -32,13 +36,23 @@ public class MoreFragment extends Fragment implements BackView {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_more, container, false);
 
+        scNotification = view.findViewById(R.id.scNotification);
         btnShare = view.findViewById(R.id.btnShare);
         btnRateApp = view.findViewById(R.id.btnRateApp);
+
+        scNotification.setChecked(((MainActivity) getActivity()).enableNotification());
+        scNotification.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean enable) {
+                ((MainActivity) getActivity()).saveEnableNotification(enable);
+                ((MainActivity) getActivity()).checkSubscribeFCM();
+            }
+        });
 
         btnShare.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                share();
             }
         });
 
@@ -55,6 +69,14 @@ public class MoreFragment extends Fragment implements BackView {
     @Override
     public boolean onBackPressed() {
         return true;
+    }
+
+    private void share() {
+        String shareBody = "https://swarish.in/";
+        Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
+        sharingIntent.setType("text/plain");
+        sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, shareBody);
+        startActivity(Intent.createChooser(sharingIntent, getResources().getString(R.string.share)));
     }
 
     private void rateApp() {
